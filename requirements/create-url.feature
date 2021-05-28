@@ -1,7 +1,7 @@
 Feature: Usuário não logado
   Como um usuário não logado,
-  Quero encurtar uma URL mais longa,
-  Para compartilhar um link mais elegante em qualquer outro lugar.
+  Quero ser autenticado,
+  Para poder consumir o serviço de encurtamento de links.
 
   Cenário: Gerando uma url encurtada sem autenticação
     Dado que o usuário está deslogado
@@ -21,6 +21,22 @@ Feature: Usuário não logado
     Então o sistema deve prosseguir com a solicitação
     E gravar a url gerada no cache
 
+  Cenário: Autenticando um usuário
+    Dado que um usuário solicita a autenticação
+    E ainda não possui cadastro
+    Então o sistema deve registrá-lo
+    E gravar esse usuário no cache
+
+    Dado que um usuário solicita a autenticação
+    E possui cadastro
+    Então o sistema deve gravar esse usuário no cache
+    E redireciona-lo para a página de links encurtados
+
+  Cenário: Deslogando um usuário
+    Dado que um usuário solicita o logout
+    Então o sistema deve limpar esse usuário do cache
+    E redireciona-lo para a página principal
+    
 
 Feature: Usuário logado
   Como um usuário logado,
